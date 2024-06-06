@@ -12,7 +12,8 @@
     <title>Edit Akun | DNN Beauty</title>
 </head>
 
-<body class="h-screen bg-no-repeat bg-cover bg-white flex items-center justify-center font-poppins">
+<body class="h-screen bg-no-repeat bg-cover bg-white flex items-center justify-center font-poppins"
+      data-success="{{ session('success') }}" data-error="{{ $errors->first() }}">
 <div class="flex flex-col bg-[#FAE1F5] w-[40%] px-9 py-12">
     <h1 class="text-[#FF69B4] text-3xl font-bold text-center">Edit Akun</h1>
     <form action="{{ route('admin.update', $user->id) }}" method="POST" class="flex flex-col mt-14 mb-8">

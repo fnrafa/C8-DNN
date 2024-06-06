@@ -15,8 +15,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function showRegisterForm(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function showRegisterForm(): Application|Factory|View|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
+        if (Auth::check()) {
+            if (Auth::user()->role == 'admin') {
+                return redirect('/admin')->withErrors(['error' => 'You should logout to access this page']);
+            } else {
+                return redirect('/')->withErrors(['error' => 'You should logout to access this page']);
+            }
+        }
         return view('register');
     }
 
@@ -40,23 +47,32 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect('/login');
+        return redirect('/login')->with('success', 'Your account successfully registered, please try logn');
     }
 
-    public function showLoginForm(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function showLoginForm(): Application|Factory|View|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
+        if (Auth::check()) {
+            if (Auth::user()->role == 'admin') {
+                return redirect('/admin')->withErrors(['error' => 'You should logout to access this page']);
+            } else {
+                return redirect('/')->withErrors(['error' => 'You should logout to access this page']);
+            }
+        }
         return view('login');
     }
 
     public function login(Request $request): RedirectResponse
     {
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt(['username' => $credentials['email'], 'password' => $credentials['password']]) || Auth::attempt($credentials)) {
-            if (Auth::user()->role == "admin") return redirect("/admin");
-            else return redirect('/');
+            $user = Auth::user();
+            if ($user->role == "admin") {
+                return redirect('/admin')->with('success', 'Welcome back, ' . $user->username . '!');
+            } else {
+                return redirect('/')->with('success', 'Welcome back, ' . $user->username . '!');
+            }
         }
-
         return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.']);
     }
 

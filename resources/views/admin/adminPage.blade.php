@@ -12,7 +12,7 @@
     <title>Edit Profile Admin | DNN Beauty</title>
 </head>
 
-<body class="font-poppins">
+<body class="font-poppins" data-success="{{ session('success') }}" data-error="{{ $errors->first() }}">
 <nav class="py-4 px-10">
     <div class="flex items-center gap-x-3 mb-5">
         <img src="{{asset("assets/logo.png")}}" alt="Logo DNN" class="h-24"/>

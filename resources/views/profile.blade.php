@@ -12,7 +12,7 @@
     <title>Profile | DNN Beauty</title>
 </head>
 
-<body class="font-poppins">
+<body class="font-poppins" data-success="{{ session('success') }}" data-error="{{ $errors->first() }}">
 <nav class="py-4 px-10">
     <div class="flex items-center gap-x-3 mb-5">
         <img src="./assets/logo.png" alt="Logo DNN" class="h-24"/>
@@ -192,6 +192,6 @@
     </div>
     <p>2024 Kelompok 1 All rights reverved</p>
 </footer>
+<script src="{{asset("script.js")}}"></script>
 </body>
-
 </html>

@@ -8,6 +8,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -23,8 +25,15 @@ class AdminController extends Controller
         return view('admin.adminPage', compact('users'));
     }
 
-    public function showLoginForm(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function showLoginForm(): Application|Factory|View|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
+        if (Auth::check()) {
+            if (Auth::user()->role == 'admin') {
+                return redirect('/admin')->withErrors(['error' => 'You should logout to access this page']);
+            } else {
+                return redirect('/')->withErrors(['error' => 'You should logout to access this page']);
+            }
+        }
         return view('admin.loginAdmin');
     }
 
@@ -57,6 +66,6 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('admin.profile');
+        return redirect()->route('admin.profile')->with('success', 'Profile was successfully deleted');
     }
 }
