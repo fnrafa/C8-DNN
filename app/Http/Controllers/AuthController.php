@@ -73,7 +73,7 @@ class AuthController extends Controller
                 return redirect('/')->with('success', 'Welcome back, ' . $user->username . '!');
             }
         }
-        return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.']);
+        return redirect()->back()->withErrors(['error' => 'The provided credentials do not match our records.']);
     }
 
     public function logout(): Application|Redirector|RedirectResponse|\Illuminate\Contracts\Foundation\Application

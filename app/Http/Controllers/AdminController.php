@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Arrival;
+use App\Models\Collection;
 use App\Models\User;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,7 +18,9 @@ class AdminController extends Controller
 {
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view('admin.homeAdmin');
+        $collections = Collection::all();
+        $arrivals = Arrival::all();
+        return view('admin.homeAdmin', compact('collections', 'arrivals'));
     }
 
     public function profile(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application

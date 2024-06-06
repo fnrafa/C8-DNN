@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Arrival;
+use App\Models\Collection;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,8 +21,11 @@ class UserController extends Controller
         return view('editProfile', compact('user'));
     }
 
-    public function profile(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function profile(): Application|View|Factory|Redirector|\Illuminate\Contracts\Foundation\Application|RedirectResponse
     {
+        if (Auth::getUser()->role === "admin") {
+            return redirect('admin/profile');
+        }
         $user = Auth::user();
         return view('profile', compact('user'));
     }
@@ -47,5 +53,15 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('profile')->with('success', 'Profile updated successfully.');
+    }
+
+    public function index(): View|Application|Factory|RedirectResponse|\Illuminate\Contracts\Foundation\Application
+    {
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('admin.index');
+        }
+        $collections = Collection::all();
+        $arrivals = Arrival::all();
+        return view('home', compact('collections', 'arrivals'));
     }
 }

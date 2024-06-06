@@ -21,7 +21,7 @@
     <div class="flex gap-x-10">
         <ul class="flex flex-1 gap-x-5 uppercase justify-between">
             <li class="font-bold underline">
-                <a class="hover:underline" href="{{route('admin.index')}}">Home</a>
+                <a class="hover:underline" href="{{route('home')}}">Home</a>
             </li>
             <li>
                 <a class="hover:underline" href="{{route('collection')}}">Collection</a>
@@ -52,107 +52,87 @@
                           d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/>
                 </svg>
             </a>
-            <a href="{{route('admin.profile')}}">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                    <path fill-rule="evenodd"
-                          d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                          clip-rule="evenodd"/>
-                </svg>
-            </a>
+            <div class="relative group">
+                <a href="{{ route('profile') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                              d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <div
+                    class="absolute left-0 right-0 mt-2 w-max bg-pink-500 text-white text-sm rounded p-4 hidden group-hover:block">
+                    {{ Auth::user()->name }}
+                </div>
+            </div>
             <a href="{{route('logout')}}">Logout</a>
         </div>
     </div>
 </nav>
 <img src="./assets/hero.png" class="my-10" alt="Background Hero"/>
-<div class="p-10">
-    <h1 class="text-center font-medium text-5xl uppercase drop-shadow-xl">
-        Collection
-    </h1>
-    <div class="grid grid-cols-3 px-14 items-center gap-x-7 mt-8">
-        <div class="bg-[#FDCEDF] col-span-1 flex flex-col">
-            <img src="./assets/collection-face.png" alt=""/>
-            <div class="flex flex-col items-center uppercase py-1">
-                <h2 class="text-center font-semibold text-3xl">Face</h2>
-                <p class="">Shop now!</p>
-            </div>
+@if(isset($collections))
+    <div class="p-10">
+        <h1 class="text-center font-medium text-5xl uppercase drop-shadow-xl">
+            Collection
+        </h1>
+        <div class="grid grid-cols-3 px-14 items-center gap-x-7 mt-8">
+            @foreach($collections as $collection)
+                <div class="bg-[#FDCEDF] col-span-1 flex flex-col">
+                    <img src="{{asset($collection->url)}}" alt=""/>
+                    <div class="flex flex-col items-center uppercase py-1">
+                        <h2 class="text-center font-semibold text-3xl">{{$collection->name}}</h2>
+                        <p class="">Shop now!</p>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        <div class="bg-[#FDCEDF] col-span-1 flex flex-col">
-            <img src="./assets/collection-hair.png" alt=""/>
-            <div class="flex flex-col items-center uppercase py-1">
-                <h2 class="text-center font-semibold text-3xl">Hair</h2>
-                <p class="">Shop now!</p>
-            </div>
-        </div>
-        <div class="bg-[#FDCEDF] col-span-1 flex flex-col">
-            <img src="./assets/collection-body.png" alt=""/>
-            <div class="flex flex-col items-center uppercase py-1">
-                <h2 class="text-center font-semibold text-3xl">Body</h2>
-                <p class="">Shop now!</p>
-            </div>
-        </div>
+        <a class="edit-konten flex justify-end px-14 mt-3 underline text-gray-600 items-center gap-x-1"
+           href="{{route('admin.home')}}">
+            <p>Edit Konten</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-pencil-square"
+                 viewBox="0 0 16 16">
+                <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd"
+                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+        </a>
     </div>
-    <a class="edit-konten flex justify-end px-14 mt-3 underline text-gray-600 flex items-center gap-x-1"
-       href="{{route('admin.home')}}">
-        <p>Edit Konten</p>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
-             viewBox="0 0 16 16">
-            <path
-                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-            <path fill-rule="evenodd"
-                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-        </svg>
-    </a>
-</div>
-<div class="py-12 px-10">
-    <h1 class="text-center font-medium text-5xl uppercase drop-shadow-xl">
-        New Arrival
-    </h1>
-    <div class="flex justify-between items-center mt-8">
-        <div class="w-64">
-            <img src="./assets/product-1.png" alt=""/>
-            <div class="flex flex-col py-3">
-                <h2 class="text-lg font-medium uppercase">Ouai Shampoo</h2>
-                <p class="font-bold text-lg">Rp. 273.000</p>
-            </div>
+@endif
+
+@if(isset($arrivals))
+    <div class="py-12 px-10">
+        <h1 class="text-center font-medium text-5xl uppercase drop-shadow-xl">
+            New Arrival
+        </h1>
+        <div class="flex justify-between items-center mt-8">
+            @foreach($arrivals as $arrival)
+                <div class="w-64">
+                    <img src="{{asset($arrival->url)}}" alt=""/>
+                    <div class="flex flex-col py-3">
+                        <h2 class="text-lg font-medium uppercase">{{$arrival->name}}</h2>
+                        <p class="font-bold text-lg">{{  'Rp ' . number_format($arrival->price, 0, ',', '.')  }}</p>
+                    </div>
+                </div>
+            @endforeach
         </div>
-        <div class="w-64">
-            <img src="./assets/product-2.png" alt=""/>
-            <div class="flex flex-col py-3">
-                <h2 class="text-lg font-medium uppercase">
-                    OLAPLEX HAIR PERFECTOR
-                </h2>
-                <p class="font-bold text-lg">Rp. 198.000</p>
-            </div>
-        </div>
-        <div class="w-64">
-            <img src="./assets/product-3.png" alt=""/>
-            <div class="flex flex-col py-3">
-                <h2 class="text-lg font-medium uppercase">ALPHA HYALURONIC</h2>
-                <p class="font-bold text-lg">Rp. 214.000</p>
-            </div>
-        </div>
-        <div class="w-64">
-            <img src="./assets/product-4.png" alt=""/>
-            <div class="flex flex-col py-3">
-                <h2 class="text-lg font-medium uppercase">NOCOTINA BODY WASH</h2>
-                <p class="font-bold text-lg">Rp. 214.000</p>
-            </div>
-        </div>
+        <a class="edit-konten flex justify-end px-14 mt-3 underline text-gray-600 items-center gap-x-1"
+           href="{{route('admin.home')}}">
+            <p>Edit Konten</p>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 class="bi bi-pencil-square"
+                 viewBox="0 0 16 16">
+                <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd"
+                      d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+            </svg>
+        </a>
     </div>
-    <a class="edit-konten flex justify-end mt-3 px-14 underline text-gray-600 flex items-center gap-x-1"
-       href="{{route('admin.home')}}">
-        <p>Edit Konten</p>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
-             viewBox="0 0 16 16">
-            <path
-                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-            <path fill-rule="evenodd"
-                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-        </svg>
-    </a>
-</div>
+@endif
 <img src="./assets/WEEKLY SALE.png" alt=""/>
-<a class="edit-konten flex justify-end mt-3 px-14 underline text-gray-600 flex items-center gap-x-1"
+<a class="edit-konten justify-end mt-3 px-14 underline text-gray-600 flex items-center gap-x-1"
    href="{{route('admin.home')}}">
     <p>Edit Konten</p>
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
@@ -187,7 +167,7 @@
             </button>
         </div>
     </div>
-    <a class="edit-konten flex justify-end mt-3 px-14 underline text-gray-600 flex items-center gap-x-1"
+    <a class="edit-konten flex justify-end mt-3 px-14 underline text-gray-600 items-center gap-x-1"
        href="{{route('admin.home')}}">
         <p>Edit Konten</p>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square"
@@ -209,7 +189,7 @@
         </div>
         <div class="col-span-1 flex flex-col items-start gap-y-5">
             <a class="font-medium hover:underline hover:cursor-pointer text-[#9F9F9F]">Links</a>
-            <a class="font-medium hover:underline hover:cursor-pointer">Home</a>
+            <a class="font-medium hover:underline hover:cursor-pointer" href="{{route('home')}}">Home</a>
             <a class="font-medium hover:underline hover:cursor-pointer">Shop</a>
             <a class="font-medium hover:underline hover:cursor-pointer">About</a>
             <a class="font-medium hover:underline hover:cursor-pointer">Contact</a>
