@@ -54,7 +54,7 @@ class AuthController extends Controller
 
         if (Auth::attempt(['username' => $credentials['email'], 'password' => $credentials['password']]) || Auth::attempt($credentials)) {
             if (Auth::user()->role == "admin") return redirect("/admin");
-            else return redirect()->intended('/home');
+            else return redirect('/');
         }
 
         return redirect()->back()->withErrors(['email' => 'The provided credentials do not match our records.']);
